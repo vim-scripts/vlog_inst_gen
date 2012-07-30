@@ -6,8 +6,8 @@
 "       Description     : generate verilog instance. If your file 
 "           can accress syntax check, then this plugin can work.                                
 "                           hot-keys
-"                           c-f11       : instance generate
-"                           f11         : change working mode
+"                           ,ig         : instance generate
+"                           ,im         : change working mode
 "       Supported working mode:
 "           mode 0(default): 
 "               copy inst to clipboard and echo inst in commandline
@@ -22,6 +22,14 @@
 "                       file creation
 "       Reversion 1.1   20120730    ming
 "                       first success....
+"       Reversion 1.2   20120730    ming
+"                       1. add user defined command:
+"                           VlogInstGen and VlogInstMod
+"                       2. change key-mapping to ,ig and ,im
+"                           ig: instance generation
+"                           im: instance mode
+"                       3. add my voice to zhizhi
+"                           hot-key:,zz  ,,,  ,tc
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if exists('b:vlog_inst_gen') || &cp || version < 700
@@ -41,14 +49,16 @@ let b:vlog_inst_gen = 1
     "silent! unmap <F12>
 "endif
 "map <F12> :unlet b:vlog_inst_gen<CR>:source C:/Program\ Files/Vim/vlog_inst_gen.vim<CR>
-if maparg("<C-F11>") != ""
-    silent! unmap <C-F11>
+command     VlogInstGen     :call Vlog_Inst_Gen()
+command     VlogInstMod     :call Vlog_Inst_Gen_Mode_Change()
+if maparg(",ig") != ""
+    silent! unmap ,ig
 endif
-if maparg("<F11>") != ""
-    silent! unmap <F11>
+if maparg(",im") != ""
+    silent! unmap ,im
 endif
-map <C-F11>     :call Vlog_Inst_Gen()<CR>
-map <F11>       :call Vlog_Inst_Gen_Mode_Change()<CR>
+nmap        ,ig             :VlogInstGen<CR>
+nmap        ,im             :VlogInstMod<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -756,7 +766,7 @@ fun! Vlog_Inst_Gen()
     if g:vlog_inst_gen_mode == 0
         echohl Vlog_Inst_Gen_Msg_0
         echo "\n"
-        echo module_num." insts as follows has been copyed to clipboard:"
+        echo module_num." insts as follows copyed:"
         echo "\n"
         echohl Vlog_Inst_Gen_Msg_1
         echo inst_part
@@ -808,7 +818,6 @@ fun! Vlog_Inst_Gen()
 endfun
 
 
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Subfunction     : Vlog_Inst_Gen_Mode_Change
 "   Input           : none
@@ -844,3 +853,269 @@ fun! Vlog_Inst_Gen_Mode_Change()
         echohl None
     endif
 endfun
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"       Say something to zhizhi..
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"golobal variables
+let g:list_length_max = 40              "the length of the mapped list
+let g:string_last_list_point = 80       "the point of the flag of last list of string. It's char 'P'
+let g:ch_unmap_point = 111              "unmap point, char 'o'
+let g:ch_unmap_add = 14                 "unmap sub value
+let g:ch_unmap_sub = 80                 "unmap add value
+let g:str_use_color_flag = 1
+let g:gvim_win_width = 80
+let g:last_output_str = []
+let g:last_output_cmdheight = 1
+"string related
+let g:str_sum = 16                      "the sum of string
+let g:str_list_dict = {0:0, 1:1, 2:2, 3:4, 4:6, 5:9, 6:11, 7:13, 8:15,
+            \   9:17, 10:19, 11:20, 12:22, 13:24, 14:26, 15:28}
+let g:mapped_voice_to_zz = [
+            \   "I*\"\"(x+'G_\"$'$\" u%@[?w*:3FtJ;#y\\-->7\"vUYm&)*|i0D[#",
+            \   "j/\"$$#.kujKagpSdWpSpbdWffkpY[d^ oa735J9je!BH[Xk)c3",
+            \   ".Q\"'&+zpA$Kagdp^SgYZp^[]WpTd[^^[S`fpeg`eZ[`W|p;p^[",
+            \   "%A\"#&G;.&d]Wp[fpeap_gUZ zT_=E=jr2kjfRW=DSpzUrt,h;j",
+            \   "Ub\")$|(O'GKagdpZShWp^ahW^kpUS`[`WpfaafZ|pfZWkp^aa]",
+            \   "_J\"%$kSutOep_adWpTWSgf[Xg^piZW`pkagp^SgYZ DC=AK@W(",
+            \   "BW##'0rM[ZFZWpVSkpiZW`p_kpYS_WpTWYS`pXSVWV|p_kp^[X",
+            \   "t\\\"&\"aj?vIWefk^WpUZS`YWVpSp^af|p;pS_pXg^^paXpefdW`",
+            \   "q%\"%'6g*M[YfZ|p_SkTWp[fwepkagdpUa_[`Ypfap&#& _Iej3",
+            \   "Cm\"()abcJd;Xp[fwepdWS^pfZSfpkagdpSdWp_S`|p_SkpTWp[",
+            \   "mN\"$)G;&JMfwepi[eWpXadp_S`pTW[`YpYSk 9$tUN&F2du\"(-",
+            \   "#f\"(&L#q.<Kagp]WWbpV[efS`UWpi[fZp_W|pTgfpkagpUS_Wp",
+            \   "<O\"$&IZ=-n_adWpU^aeWdp[`p_kpZWSdf vBn[0[A9853&31(z",
+            \   "bp\"'#+=[[0;piS`fpfapeWWpeg`d[eWpi[fZpkagp[`pfZWpab",
+            \   "!,\"## ?0v|W`pUag`fdk WsUU&*{h4>|\\VOKRyd0VD5:&|Sf:7",
+            \   "2u\"')7U1y|;fwepUalkpfapiS^]pi[fZpkagp[`pfZWpdSV[S`",
+            \   "n%\"#)w)8#WUWpaXpfZWpeg`eWf il\"W9ubJcXm/UmjqKPCNvx!",
+            \   ":Q\"'+ARV$QA`UWp_kpV[eST^[fkpfap_S]Wpkagp^SgYZ[`YpX",
+            \   "HK\"#+NY6'FdgefdSfWVp_WpSp^af JQ.0='vbhld94pCr>Zk4a",
+            \   "4C\"&\"JQ<8rKagdpZSbb[`Weep[ep_kpYdWSfWefpZSbb[`Wee ",
+            \   "0T\"(%GI]6PKagdp`SfgdWpS`VpU^WhWdpiWdWpiZSfp;pS_pSX",
+            \   "s-\"$%ROsb;fWd|pfZWkpSffdSUfWVp_W P=5=\"#iD*==d!O)La",
+            \   "{a\"&)K._G4;pYgWeepkagpSdWpSpY[d^pi[fZpefda`Ypi[^^x",
+            \   "&6\"\")mO9nvK[LZ[y *|y`pCA1+!['75W`Q:IMBz5aA+=Q1FLx=",
+            \   "s]\"($QRx|1FZWpf[_WpkagpVWhafWVp[`piad]pZSepea_Wpba",
+            \   "1?\"$$xO7{P[`fepfZWpeS_Wpi[fZp_W :og9[liU<wK\"x&(x*M",
+            \   "{b\"()r.uIz;fwepX[`WpXadp_WpfapSUUWbfpkagdpUZa[UW|p",
+            \   "\"N\"$)b#wfcVa`wfpiaddkpSTagfpS`kfZ[`Y tN#[5TQ=B^4r>",
+            \   "L1\"%#WZdWlLZ[LZ[|pkagpSdWpSpbWdXWUfpY[d^ `9(TxqwaJ"]
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"       Random number generation
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let s:rnd = localtime() % 0x10000
+let g:num_history = [0, 0, 0, 0, 0]
+"random generate
+fun! <SID>Usr_Random()
+  let s:rnd = (s:rnd * 31421 + 6927) % 0x10000
+  return s:rnd
+endfun
+"random with range generate
+fun! <SID>Usr_Choose(n) " 0 n within
+  return (<SID>Usr_Random() * a:n) / 0x10000
+endfun
+"choose random numbers that doesn't same with the previous 5 numbers
+fun! <SID>Usr_Get_Choice(n)
+    if          g:num_history[0] == 0   &&
+            \   g:num_history[1] == 0   &&
+            \   g:num_history[2] == 0   &&
+            \   g:num_history[3] == 0   &&
+            \   g:num_history[4] == 0
+        let g:num_history = [0, a:n-2, a:n-3, a:n-4, a:n-5]
+    endif
+    let num_cur = <SID>Usr_Choose(a:n)
+    while index(g:num_history, num_cur) >= 0
+        let num_cur = <SID>Usr_Choose(a:n)
+    endwhile
+    let g:num_history = g:num_history[0:3]
+    call insert(g:num_history, num_cur)
+    return num_cur
+endfun
+
+"define my color groups
+hi  Usr_Def_Color_0     gui=bold        guifg=#EC75A5       "
+hi  Usr_Def_Color_1     gui=bold        guifg=#C85064       "
+hi  Usr_Def_Color_2     gui=bold        guifg=#E97D07       "cheng
+hi  Usr_Def_Color_3     gui=bold        guifg=#59B00B       "lv
+hi  Usr_Def_Color_4     gui=bold        guifg=#B66B52       "zong
+hi  Usr_Def_Color_5     gui=bold        guifg=#5F9A97       "lan
+hi  Usr_Def_Color_6     gui=bold        guifg=#9D5E76       "more or less zi
+hi  Usr_Def_Color_7     gui=bold        guifg=#E754BB       "fen
+hi  Usr_Def_Color_8     gui=bold        guifg=#DF3FFC       "fen zi
+hi  Usr_Def_Color_9     gui=bold        guifg=#8B7A4E       "hui
+"set echo highlight style to random group
+fun! <SID>Usr_Echohl_Set()
+    "get random color number
+    let color_rand = <SID>Usr_Get_Choice(10)
+    "set echohl
+    if color_rand == 0
+        echohl Usr_Def_Color_0
+    elseif color_rand == 1
+        echohl Usr_Def_Color_1
+    elseif color_rand == 2
+        echohl Usr_Def_Color_2
+    elseif color_rand == 3
+        echohl Usr_Def_Color_3
+    elseif color_rand == 4
+        echohl Usr_Def_Color_4
+    elseif color_rand == 5
+        echohl Usr_Def_Color_5
+    elseif color_rand == 6
+        echohl Usr_Def_Color_6
+    elseif color_rand == 7
+        echohl Usr_Def_Color_7
+    elseif color_rand == 8
+        echohl Usr_Def_Color_8
+    elseif color_rand == 9
+        echohl Usr_Def_Color_9
+    else
+        echohl None
+    endif
+endfun
+
+"Unmap string and output them
+"judge wether it is the last list flag
+fun! <SID>Str_LL_Judge(ch)
+    let ll_flag = char2nr(a:ch)
+    if ll_flag > g:string_last_list_point
+        return 0
+    else
+        return 1
+    endif
+endfun
+"unmap one charactor
+fun! <SID>Unmap_Char(ch)
+    let str_nr = char2nr(a:ch)   "trans to ascii value
+    if str_nr > g:ch_unmap_point
+        let str_nr = str_nr - g:ch_unmap_sub
+    else
+        let str_nr = str_nr + g:ch_unmap_add
+    endif
+    let str_nr = nr2char(str_nr)
+    return str_nr
+endfun
+"Output to the command line
+fun! <SID>Mapped_Output(str_sum)
+    let g:last_output_str = []
+    "get choice
+    let usr_choice = <SID>Usr_Get_Choice(a:str_sum)
+    "get string info
+    let first_list_flag = 1
+    let last_list_flag = 0
+    let str_idx = g:str_list_dict[usr_choice]
+
+    while last_list_flag == 0
+        let str_list = g:mapped_voice_to_zz[str_idx]
+        let last_list_flag = <SID>Str_LL_Judge(strpart(str_list, 1, 1))
+        let str_len = <SID>Unmap_Char(strpart(str_list, 2, 1)).<SID>Unmap_Char(strpart(str_list, 3, 1)).<SID>Unmap_Char(strpart(str_list, 4, 1))
+        let str_len = str2nr(str_len)
+        "set cmdheight
+        if first_list_flag == 1
+            let first_list_flag = 0 "clear flag
+            if g:gvim_win_width < 30    " too narrow
+                let &cmdheight = 5
+                let g:last_output_cmdheight = 5
+            else                        " enough width
+                if str_len > (g:gvim_win_width-30)*3
+                    let &cmdheight = 4
+                    let g:last_output_cmdheight = 4
+                elseif str_len > (g:gvim_win_width-30)*2
+                    let &cmdheight = 3
+                    let g:last_output_cmdheight = 3
+                elseif str_len > g:gvim_win_width-30
+                    let &cmdheight = 2
+                    let g:last_output_cmdheight = 2
+                else
+                    let &cmdheight = 1
+                    let g:last_output_cmdheight = 1
+                endif
+            endif
+        endif
+        "output list
+        if str_len > g:list_length_max
+            let str_len = g:list_length_max
+        endif
+        let i = 0
+        while i<str_len
+            echon <SID>Unmap_Char(strpart(str_list, i+10, 1))
+            let g:last_output_str = add(g:last_output_str, <SID>Unmap_Char(strpart(str_list, i+10, 1)))
+            let i = i+1
+        endw
+        let str_idx = str_idx + 1
+    endw
+endfun
+"colored output
+fun! Ming_Say_To_ZZ(str_sum)
+    if g:str_use_color_flag == 0
+        echohl None
+    else
+        call <SID>Usr_Echohl_Set()
+    endif
+    call <SID>Mapped_Output(a:str_sum)
+    echohl None
+endfun
+"output last str
+fun! <SID>Usr_Last_Str_Output()
+    let l = len(g:last_output_str)
+    let index = 0
+    while index < l
+        echon g:last_output_str[index]
+        let index = index + 1
+    endw
+endfun
+"toggle color flag
+fun! Toggle_String_Output_Color()
+    if g:str_use_color_flag == 0
+        echo ""
+        call <SID>Usr_Echohl_Set()
+        let &cmdheight = g:last_output_cmdheight
+        call <SID>Usr_Last_Str_Output()
+        echohl None
+        let g:str_use_color_flag = 1
+    else
+        echo ""
+        let &cmdheight = g:last_output_cmdheight
+        call <SID>Usr_Last_Str_Output()
+        let g:str_use_color_flag = 0
+    endif
+endfun
+"auto adjust the width of gvim's window
+autocmd GUIEnter,VimResized *.* let g:gvim_win_width = winwidth(0)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"       key mapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"output hot-key
+if maparg(",zz") != ""
+    silent! unmap ,zz
+endif
+map ,zz :call Ming_Say_To_ZZ(g:str_sum)<CR>
+"clear output and reset cmdheight
+if maparg(",,,") != ""
+    silent! unmap ,,,
+endif
+map ,,, :set cmdheight=1<CR>:echo ""<CR>
+"toggle use color flag
+if maparg(",tc") != ""
+    silent! unmap ,tc
+endif
+map ,tc :call Toggle_String_Output_Color()<CR>
