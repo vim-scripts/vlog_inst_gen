@@ -1,0 +1,24 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=4151
+
+This script is used for automatically generating verilog instance from the file. When you type the given hot-key, instance will be copied to system clipboard, and display or not by  its working mode. Once your file can access syntax check, this plunin will work, or there must be a bug. It's encouraged to share it with me and all other people.
+
+Supported working mode:
+    mode 0(default): 
+        copy inst to clipboard and echo inst in commandline
+    mode 1:
+        only copy to clipboard
+    mode 2:
+        copy to clipboard and echo inst in split window
+    mode 3:
+        copy to clipboard and update inst_comment to file
+    
+  To change the default working mode, you should modify the line "let g:vlog_inst_gen_mode=x", x is the default working mode.
+
+User defined command:
+        VlogInstGen : generate verilog instance
+        VlogInstMod : change working mode
+Default hot-keys:
+        ,ig         : VlogInstGen
+        ,im        : VlogInstMod
+Contact:
+        mingforregister@163.com
