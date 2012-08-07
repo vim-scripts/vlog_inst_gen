@@ -31,6 +31,10 @@
 "                       3. add my voice to zhizhi
 "                           hot-key:,zz  ,,,  ,tc
 "
+"
+"       For newest version please goto:
+"       http://www.vim.org/scripts/script.php?script_id=4151
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if exists('b:vlog_inst_gen') || &cp || version < 700
     finish
@@ -71,7 +75,7 @@ hi  Vlog_Inst_Gen_Msg_0     gui=bold        guifg=#1E56DB       "lan
 hi  Vlog_Inst_Gen_Msg_1     gui=NONE        guifg=#DB26D2       "fen
 "hi  Vlog_Inst_Gen_Msg_1     gui=NONE        guifg=#10E054       "lv
 "golobal variables
-let g:vlog_inst_gen_mode = 0
+let g:vlog_inst_gen_mode = 0            "default working mode
 let g:check_port_declaration = 1
 
 
@@ -1065,7 +1069,7 @@ fun! <SID>Mapped_Output(str_sum)
     endw
 endfun
 "colored output
-fun! Ming_Say_To_ZZ(str_sum)
+fun! <SID>Ming_Say_To_ZZ(str_sum)
     if g:str_use_color_flag == 0
         echohl None
     else
@@ -1084,7 +1088,7 @@ fun! <SID>Usr_Last_Str_Output()
     endw
 endfun
 "toggle color flag
-fun! Toggle_String_Output_Color()
+fun! <SID>Toggle_String_Output_Color()
     if g:str_use_color_flag == 0
         echo ""
         call <SID>Usr_Echohl_Set()
@@ -1108,7 +1112,7 @@ autocmd GUIEnter,VimResized *.* let g:gvim_win_width = winwidth(0)
 if maparg(",zz") != ""
     silent! unmap ,zz
 endif
-map ,zz :call Ming_Say_To_ZZ(g:str_sum)<CR>
+map ,zz :call <SID>Ming_Say_To_ZZ(g:str_sum)<CR>
 "clear output and reset cmdheight
 if maparg(",,,") != ""
     silent! unmap ,,,
@@ -1118,4 +1122,4 @@ map ,,, :set cmdheight=1<CR>:echo ""<CR>
 if maparg(",tc") != ""
     silent! unmap ,tc
 endif
-map ,tc :call Toggle_String_Output_Color()<CR>
+map ,tc :call <SID>Toggle_String_Output_Color()<CR>
