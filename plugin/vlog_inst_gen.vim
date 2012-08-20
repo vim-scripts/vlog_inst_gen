@@ -30,6 +30,17 @@
 "                           im: instance mode
 "                       3. add my voice to zhizhi
 "                           hot-key:,zz  ,,,  ,tc
+"       Reversion 1.3   20120807    ming
+"                       a little ~
+"       Reversion 1.4   20120820    ming
+"                       add one feature: copy instance also to clickboard
+"                       ", so that you can use key 'p' to paste it. Also 
+"                       you can disable this feature by modifying  this 
+"                       script's line:
+"                           let g:is_copy_inst_to_doublequotation = 1
+"                       to:
+"                           let g:is_copy_inst_to_doublequotation = 0
+"
 "
 "
 "       For newest version please goto:
@@ -75,8 +86,12 @@ hi  Vlog_Inst_Gen_Msg_0     gui=bold        guifg=#1E56DB       "lan
 hi  Vlog_Inst_Gen_Msg_1     gui=NONE        guifg=#DB26D2       "fen
 "hi  Vlog_Inst_Gen_Msg_1     gui=NONE        guifg=#10E054       "lv
 "golobal variables
-let g:vlog_inst_gen_mode = 0            "default working mode
+let g:vlog_inst_gen_mode = 0            "default working mode, modify
+                                        "default working mode here;
 let g:check_port_declaration = 1
+let g:is_copy_inst_to_doublequotation = 1 "copy instance to clickboard,
+                                        "so that you can use 'p' to 
+                                        "paste..
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -766,6 +781,9 @@ fun! Vlog_Inst_Gen()
     "step 6: get inst part and copy to clipboard
     let inst_part = <SID>Inst_Part_Format(module_num, module_name_list, para_list, port_list)
     let @+ = inst_part
+    if g:is_copy_inst_to_doublequotation
+        let @" = inst_part
+    endif
     "step 6: get inst insert location
     if g:vlog_inst_gen_mode == 0
         echohl Vlog_Inst_Gen_Msg_0

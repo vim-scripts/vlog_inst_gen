@@ -12,7 +12,7 @@ Supported working mode:
     mode 3:
         copy to clipboard and update inst_comment to file
     
-  To change the default working mode, you should modify the line "let g:vlog_inst_gen_mode=x", x is the default working mode.
+  To change the default working mode, you should modify the line in this script "let g:vlog_inst_gen_mode=x", x is the default working mode; or you can add  "let g:vlog_inst_gen_mode=x" to your _vimrc or .vimrc file.
 
 User defined command:
         VlogInstGen : generate verilog instance
